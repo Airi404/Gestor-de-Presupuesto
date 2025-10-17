@@ -35,20 +35,20 @@ describe("Función CrearGasto y funcionamiento de objeto gasto", function() {
         let gasto3 = new CrearGasto(descr, 23.55, "2021-10-06T13:10Z" );
         assert.equal(gasto3.descripcion, descr);
         assert.equal(gasto3.valor, 23.55);
-        assert.equal(gasto3.fecha, Date.parse("2021-10-06T13:10Z"));
+        assert.equal(gasto3.fecha.getTime(), Date.parse("2021-10-06T13:10Z"));
         assert.isEmpty(gasto3.etiquetas);
 
         let gasto4 = new CrearGasto(descr, 23.55, "2021-10-06T13:10Z", "casa" );
         assert.equal(gasto4.descripcion, descr);
         assert.equal(gasto4.valor, 23.55);
-        assert.equal(gasto4.fecha, Date.parse("2021-10-06T13:10Z"));
+        assert.equal(gasto4.fecha.getTime(), Date.parse("2021-10-06T13:10Z"));
         assert.lengthOf(gasto4.etiquetas,1);
         assert.equal(gasto4.etiquetas[0], "casa");
 
         let gasto5 = new CrearGasto(descr, 23.55, "2021-10-06T13:10Z", "casa", "supermercado" );
         assert.equal(gasto5.descripcion, descr);
         assert.equal(gasto5.valor, 23.55);
-        assert.equal(gasto5.fecha, Date.parse("2021-10-06T13:10Z"));
+        assert.equal(gasto5.fecha.getTime(), Date.parse("2021-10-06T13:10Z"));
         assert.lengthOf(gasto5.etiquetas,2);
         assert.equal(gasto5.etiquetas[0], "casa");
         assert.equal(gasto5.etiquetas[1], "supermercado");
@@ -56,11 +56,12 @@ describe("Función CrearGasto y funcionamiento de objeto gasto", function() {
         let gasto6 = new CrearGasto(descr, 23.55, "2021-10-06T13:10Z", "casa", "supermercado", "comida" );
         assert.equal(gasto6.descripcion, descr);
         assert.equal(gasto6.valor, 23.55);
-        assert.equal(gasto6.fecha, Date.parse("2021-10-06T13:10Z"));
+        assert.equal(gasto6.fecha.getTime(), Date.parse("2021-10-06T13:10Z"));
         assert.lengthOf(gasto6.etiquetas,3);
         assert.equal(gasto6.etiquetas[0], "casa");
         assert.equal(gasto6.etiquetas[1], "supermercado");
         assert.equal(gasto6.etiquetas[2], "comida");
+
 
     });
 
@@ -78,15 +79,16 @@ Etiquetas:
 `);
     });
 
-    it("Método 'actualizarFecha' del objeto gasto", function() {
-        let orig = Date.parse("2021-10-06T13:10Z");
-        let nueva = Date.parse("2021-11-11T13:10Z");
-        let gasto1 = new CrearGasto("descripción del gasto", 23.55, "2021-10-06T13:10Z");
-        gasto1.actualizarFecha("novalida");
-        assert.equal(gasto1.fecha, orig, "Si la fecha no es válida, se debe dejar sin modificar.");
-        gasto1.actualizarFecha("2021-11-11T13:10Z");
-        assert.equal(gasto1.fecha, nueva, "Actualizar fecha si es válida.");
-    });
+   it("Método 'actualizarFecha' del objeto gasto", function() {
+    let orig = Date.parse("2021-10-06T13:10Z");
+    let nueva = Date.parse("2021-11-11T13:10Z");
+    let gasto1 = new CrearGasto("descripción del gasto", 23.55, "2021-10-06T13:10Z");
+    gasto1.actualizarFecha("novalida");
+    assert.equal(gasto1.fecha.getTime(), orig, "Si la fecha no es válida, se debe dejar sin modificar.");
+    gasto1.actualizarFecha("2021-11-11T13:10Z");
+    assert.equal(gasto1.fecha.getTime(), nueva, "Actualizar fecha si es válida.");
+});
+
 
     it("Método 'anyadirEtiquetas' del objeto gasto", function() {
         let valor = 44.55;
