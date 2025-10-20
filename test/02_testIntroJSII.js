@@ -35,20 +35,20 @@ describe("Función CrearGasto y funcionamiento de objeto gasto", function() {
         let gasto3 = new CrearGasto(descr, 23.55, "2021-10-06T13:10Z" );
         assert.equal(gasto3.descripcion, descr);
         assert.equal(gasto3.valor, 23.55);
-        assert.equal(gasto3.fecha.getTime(), Date.parse("2021-10-06T13:10Z"));
+        assert.equal(gasto3.fecha, Date.parse("2021-10-06T13:10Z"));
         assert.isEmpty(gasto3.etiquetas);
 
         let gasto4 = new CrearGasto(descr, 23.55, "2021-10-06T13:10Z", "casa" );
         assert.equal(gasto4.descripcion, descr);
         assert.equal(gasto4.valor, 23.55);
-        assert.equal(gasto4.fecha.getTime(), Date.parse("2021-10-06T13:10Z"));
+        assert.equal(gasto4.fecha, Date.parse("2021-10-06T13:10Z"));
         assert.lengthOf(gasto4.etiquetas,1);
         assert.equal(gasto4.etiquetas[0], "casa");
 
         let gasto5 = new CrearGasto(descr, 23.55, "2021-10-06T13:10Z", "casa", "supermercado" );
         assert.equal(gasto5.descripcion, descr);
         assert.equal(gasto5.valor, 23.55);
-        assert.equal(gasto5.fecha.getTime(), Date.parse("2021-10-06T13:10Z"));
+        assert.equal(gasto5.fecha, Date.parse("2021-10-06T13:10Z"));
         assert.lengthOf(gasto5.etiquetas,2);
         assert.equal(gasto5.etiquetas[0], "casa");
         assert.equal(gasto5.etiquetas[1], "supermercado");
@@ -56,7 +56,7 @@ describe("Función CrearGasto y funcionamiento de objeto gasto", function() {
         let gasto6 = new CrearGasto(descr, 23.55, "2021-10-06T13:10Z", "casa", "supermercado", "comida" );
         assert.equal(gasto6.descripcion, descr);
         assert.equal(gasto6.valor, 23.55);
-        assert.equal(gasto6.fecha.getTime(), Date.parse("2021-10-06T13:10Z"));
+        assert.equal(gasto6.fecha, Date.parse("2021-10-06T13:10Z"));
         assert.lengthOf(gasto6.etiquetas,3);
         assert.equal(gasto6.etiquetas[0], "casa");
         assert.equal(gasto6.etiquetas[1], "supermercado");
