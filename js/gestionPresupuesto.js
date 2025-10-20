@@ -93,9 +93,11 @@ class CrearGasto
     }
     obtenerPeriodoAgrupacion(periodo)
     {
-        const anyo = this.fecha.getFullYear();
-        const mes = String(this.fecha.getMonth() + 1).padStart(2, '0'); // Añade un cero a la izquierda del número si es menor de 10 y al mes se le añade 1 porque enero es 0.
-        const dia = String(this.fecha.getDate()).padStart(2, '0');
+        const fechaObj = new Date(this.fecha);
+        
+        const anyo = fechaObj.getFullYear();
+        const mes = String(fechaObj.getMonth() + 1).padStart(2, '0'); // Añade un cero a la izquierda del número si es menor de 10 y al mes se le añade 1 porque enero es 0.
+        const dia = String(fechaObj.getDate()).padStart(2, '0');
 
         if (periodo === "mes") 
         {
