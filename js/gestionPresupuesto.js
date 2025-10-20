@@ -28,7 +28,7 @@ class CrearGasto
         this.descripcion = typeof descripcion === 'string' ? descripcion : '';
         this.valor = typeof valor === 'number' && valor >= 0 ? valor : 0;
         const parsedFecha = new Date(fecha);
-        this.fecha = !isNaN(parsedFecha) ? parsedFecha : new Date(); // Si es un numero lo convierte a Date y devuelve la fecha parseada o la fecha actual si no es un número.
+        this.fecha = !isNaN(parsedFecha.getTime()) ? parsedFecha.getTime() : new Date().getTime(); // Si es un numero lo convierte a Date y devuelve la fecha parseada o la fecha actual si no es un número.
         this.etiquetas = Array.isArray(etiquetas) ? etiquetas : etiquetas.length ? etiquetas : []; 
     }
 
@@ -38,8 +38,8 @@ class CrearGasto
     }
 
     mostrarGastoCompleto() 
-    {
-        const fechaFormateada = this.fecha.toLocaleString(); // Formatea la fecha en el formato local.
+    {   
+        const fechaFormateada = new Date(this.fecha).toLocaleString(); // Formatea la fecha en el formato local.
         const etiquetasFormateadas = this.etiquetas.map(e => `- ${e}`).join('\n'); // Formatea las etiquetas en una lista de líneas.
         return `Gasto correspondiente a ${this.descripcion} con valor ${this.valor} €.\nFecha: ${fechaFormateada}\nEtiquetas:\n${etiquetasFormateadas}\n`;
     }
@@ -65,7 +65,7 @@ class CrearGasto
         const parsed = new Date(nuevaFecha);
         if (!isNaN(parsed)) 
         {
-            this.fecha = parsed;
+            this.fecha = parsed.getTime();
         }
 
         return this.fecha;

@@ -84,9 +84,9 @@ Etiquetas:
     let nueva = Date.parse("2021-11-11T13:10Z");
     let gasto1 = new CrearGasto("descripción del gasto", 23.55, "2021-10-06T13:10Z");
     gasto1.actualizarFecha("novalida");
-    assert.equal(gasto1.fecha.getTime(), orig, "Si la fecha no es válida, se debe dejar sin modificar.");
+    assert.equal(gasto1.fecha, orig, "Si la fecha no es válida, se debe dejar sin modificar.");
     gasto1.actualizarFecha("2021-11-11T13:10Z");
-    assert.equal(gasto1.fecha.getTime(), nueva, "Actualizar fecha si es válida.");
+    assert.equal(gasto1.fecha, nueva, "Actualizar fecha si es válida.");
 });
 
 
