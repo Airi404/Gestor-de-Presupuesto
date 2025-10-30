@@ -74,7 +74,7 @@ class CrearGasto
     anyadirEtiquetas(...nuevasEtiquetas) {
         nuevasEtiquetas.forEach(etiqueta =>  // recorremos el array de etiquetas y añade las nuevas que no estén ya en el array.
         {
-            if (this.etiquetas.lenght <= 0)
+            if (this.etiquetas.length <= 0)
             {
                 this.etiquetas = [];
             }
@@ -89,7 +89,7 @@ class CrearGasto
 
     borrarEtiquetas(...etiquetasAEliminar) 
     {
-            this.etiquetas = this.etiquetas.filter(e => !etiquetasAEliminar.includes(e)); // Filtra los elementos que no están en el array de etiquetasAEliminar.
+        this.etiquetas = this.etiquetas.filter(e => !etiquetasAEliminar.includes(e)); // Filtra los elementos que no están en el array de etiquetasAEliminar.
     }
     obtenerPeriodoAgrupacion(periodo)
     {

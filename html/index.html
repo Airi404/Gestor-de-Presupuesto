@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <title>Gestión de presupuesto</title>
     <link rel="stylesheet" href="../css/estilos.css">
-    <script type="module" src="../js/gestionPresupuesto.js"></script>
+    <script type="module" src="../js/gestionPresupuestoWeb.js" defer></script>
 </head>
 <body>
     <div id="aplicacion">
@@ -13,7 +13,7 @@
         <form id="formulario-presupuesto">
             <div class="form-control">
                 <label for="presupuesto">Presupuesto (€):</label>
-                <input type="number" id="presupuesto" name="presupuesto" required>
+                <input type="text" id="presupuesto" name="presupuesto" required>
             </div>
             <button type="submit">Actualizar presupuesto</button>
         </form>
@@ -29,7 +29,15 @@
             </div>
             <div class="form-control">
                 <label for="valor">Valor (€):</label>
-                <input type="number" id="valor" name="valor" required>
+                <input type="text" id="valor" name="valor" required>
+            </div>
+            <div class="form-control">
+                <label for="fecha">Fecha:</label>
+                <input type="date" id="fecha" name="fecha" required>
+            </div>
+            <div class="form-control">
+                <label for="etiquetas">Etiquetas separadas por comas: </label>
+                <input type="text" id="etiquetas" name="etiquetas">
             </div>
             <button type="submit">Añadir gasto</button>
         </form>
