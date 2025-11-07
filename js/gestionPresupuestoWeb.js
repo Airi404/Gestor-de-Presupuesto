@@ -1,6 +1,5 @@
 import {
   actualizarPresupuesto,
-  mostrarPresupuesto,
   CrearGasto,
   anyadirGasto,
   listarGastos,
@@ -9,8 +8,10 @@ import {
 
 document.getElementById("formulario-presupuesto").addEventListener("submit", function(event) {
     event.preventDefault(); // Evita que el formulario se envíe de la manera tradicional
+
     let presupuestoInput = document.getElementById("presupuesto").value;
     let resultado = actualizarPresupuesto(Number(presupuestoInput));
+
     if (resultado === -1) {
         alert("Inserte un presupuesto válido (número positivo).");
     }
@@ -22,6 +23,7 @@ document.getElementById("formulario-presupuesto").addEventListener("submit", fun
 
 document.getElementById("formulario-gasto").addEventListener("submit", function(event) {
     event.preventDefault(); // Evita que el formulario se envíe de la manera tradicional
+
     let descripcionInput = document.getElementById("descripcion").value;
     let valorInput = document.getElementById("valor").value;
     let valorInputnum = parseFloat(valorInput.replace(',', '.'));
@@ -33,6 +35,7 @@ document.getElementById("formulario-gasto").addEventListener("submit", function(
         alert("Inserte un valor de gasto válido (número positivo).");
         return;
     }
+
     if (etiquetasInput.length === 0) {
         etiquetasInput = [];
         alert("No se han añadido etiquetas al gasto.");
@@ -40,7 +43,9 @@ document.getElementById("formulario-gasto").addEventListener("submit", function(
 
     let gasto = new CrearGasto(descripcionInput, Number(valorInputnum), fechaInput, etiquetasInput);
     anyadirGasto(gasto);
+
     document.getElementById("lista-gastos").style.display = "block"; // Muestra la sección de gastos
+
     renderizarGastos();
 });
 
@@ -55,16 +60,21 @@ class MiGasto extends HTMLElement  {
     //Establece los datos del gasto y renderiza el componente
     set data(gasto) {
         this.gasto = gasto;
+
         this.render();
+
         this.addEventListeners();
     }
+    
     render() {
         const shadow = this.shadowRoot;
+
         shadow.querySelector('.gasto-descripcion').textContent = this.gasto.descripcion;
         shadow.querySelector('.gasto-valor').textContent = this.gasto.valor.toFixed(2);
         shadow.querySelector('.gasto-fecha').textContent = new Date(this.gasto.fecha).toLocaleDateString();
         shadow.querySelector('.gasto-etiquetas').textContent = this.gasto.etiquetas.join(', '); 
     }
+
     // Añade los event listeners para los botones de editar y borrar
     addEventListeners() {
         const shadow = this.shadowRoot;
@@ -72,6 +82,8 @@ class MiGasto extends HTMLElement  {
         const botonBorrar = shadow.querySelector('.eliminar-gasto');
         const formeditarGasto = shadow.querySelector(".editar-form");
         const botonCancelar = shadow.querySelector(".cancelar-edicion");
+        const botonEditar = shadow.querySelector('.editar-gasto');
+
 
         // Evento para borrar el gasto
         botonBorrar.addEventListener('click', () => {
@@ -81,11 +93,11 @@ class MiGasto extends HTMLElement  {
             }
         });
 
-        const botonEditar = shadow.querySelector('.editar-gasto');
         // Evento para mostrar/ocultar el formulario de edición
         botonEditar.addEventListener('click', () => {
             formeditarGasto.style.display = formeditarGasto.style.display === 'block' ? 'none' : 'block';
         });
+        
         // Evento para cancelar la edición
         botonCancelar.addEventListener('click', () => {
             formeditarGasto.style.display = 'none';
@@ -94,6 +106,7 @@ class MiGasto extends HTMLElement  {
         // Evento para guardar los cambios de la edición
         formeditarGasto.onsubmit = (event) => {
             event.preventDefault();
+
             const nuevaDescripcion = shadow.querySelector(".editar-descripcion").value || this.gasto.descripcion;
             const nuevoValorInput = parseFloat(shadow.querySelector(".editar-valor").value) || this.gasto.valor;
             const nuevaFechaInput = shadow.querySelector(".editar-fecha").value || this.gasto.fecha;
@@ -121,7 +134,10 @@ customElements.define('mi-gasto', MiGasto);
 function renderizarGastos() {
     const gastosContainer = document.getElementById("gastos-container");
     gastosContainer.innerHTML = ''; // Limpia el contenedor antes de renderizar
+
     const gastos = listarGastos();
+
+    // Crea y añade un componente MiGasto para cada gasto
     gastos.forEach(gasto => {
         const gastoElemento = document.createElement('mi-gasto');
         gastoElemento.data = gasto;
