@@ -52,6 +52,7 @@ class MiGasto extends HTMLElement  {
         this.attachShadow({ mode: 'open' });
         this.shadowRoot.appendChild(template);
     }  
+    //Establece los datos del gasto y renderiza el componente
     set data(gasto) {
         this.gasto = gasto;
         this.render();
@@ -64,6 +65,7 @@ class MiGasto extends HTMLElement  {
         shadow.querySelector('.gasto-fecha').textContent = new Date(this.gasto.fecha).toLocaleDateString();
         shadow.querySelector('.gasto-etiquetas').textContent = this.gasto.etiquetas.join(', '); 
     }
+    // Añade los event listeners para los botones de editar y borrar
     addEventListeners() {
         const shadow = this.shadowRoot;
 
@@ -71,6 +73,7 @@ class MiGasto extends HTMLElement  {
         const formeditarGasto = shadow.querySelector(".editar-form");
         const botonCancelar = shadow.querySelector(".cancelar-edicion");
 
+        // Evento para borrar el gasto
         botonBorrar.addEventListener('click', () => {
             if (confirm("¿Seguro que deseas borrar este gasto?")) {
                 borrarGasto(this.gasto.id);
@@ -79,14 +82,16 @@ class MiGasto extends HTMLElement  {
         });
 
         const botonEditar = shadow.querySelector('.editar-gasto');
-
+        // Evento para mostrar/ocultar el formulario de edición
         botonEditar.addEventListener('click', () => {
             formeditarGasto.style.display = formeditarGasto.style.display === 'block' ? 'none' : 'block';
         });
+        // Evento para cancelar la edición
         botonCancelar.addEventListener('click', () => {
             formeditarGasto.style.display = 'none';
-
         });
+
+        // Evento para guardar los cambios de la edición
         formeditarGasto.onsubmit = (event) => {
             event.preventDefault();
             const nuevaDescripcion = shadow.querySelector(".editar-descripcion").value || this.gasto.descripcion;
@@ -94,21 +99,25 @@ class MiGasto extends HTMLElement  {
             const nuevaFechaInput = shadow.querySelector(".editar-fecha").value || this.gasto.fecha;
             const nuevasEtiquetasInput = shadow.querySelector(".editar-etiquetas").value ? 
             shadow.querySelector(".editar-etiquetas").value.split(',').map(etiqueta => etiqueta.trim()).filter(etiqueta => etiqueta !== '') : this.gasto.etiquetas;
-
+            
+            // Actualiza los datos del gasto
             Object.assign(this.gasto, {
                 descripcion: nuevaDescripcion,
                 valor: nuevoValorInput,
                 fecha: nuevaFechaInput,
                 etiquetas: nuevasEtiquetasInput
             });
+
             renderizarGastos();
 
         };
     }
 
 }
+// Define el elemento personalizado
 customElements.define('mi-gasto', MiGasto);
 
+// Función para renderizar la lista de gastos en el contenedor
 function renderizarGastos() {
     const gastosContainer = document.getElementById("gastos-container");
     gastosContainer.innerHTML = ''; // Limpia el contenedor antes de renderizar
