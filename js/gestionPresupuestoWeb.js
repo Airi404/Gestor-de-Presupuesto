@@ -43,27 +43,80 @@ document.getElementById("formulario-gasto").addEventListener("submit", function(
     document.getElementById("lista-gastos").style.display = "block"; // Muestra la sección de gastos
     renderizarGastos();
 });
-function renderizarGastos() {
-    const listaGastos = document.getElementById("lista-gastos");
-    listaGastos.innerHTML = ""; // Limpia la lista antes de renderizar
 
-    const gastos = listarGastos();
-    gastos.forEach((gasto, index) => {
-    const div = document.createElement("div");
-    
-    const fechaFormateada = new Date(gasto.fecha).toLocaleDateString();
-    div.innerHTML = `<p>Descripción: ${gasto.descripcion} - Valor: ${gasto.valor.toFixed(2)} - Fecha: ${fechaFormateada} - Etiquetas: ${gasto.etiquetas.join(', ')}</p>
-    <button data-id="${gasto.id}">Borrar</button>`;
+// Definición del Web Component para mostrar un gasto
+class MiGasto extends HTMLElement  { 
+    constructor() {
+        super();
+        const template = document.getElementById('plantilla-gasto').content.cloneNode(true);
+        this.attachShadow({ mode: 'open' });
+        this.shadowRoot.appendChild(template);
+    }  
+    set data(gasto) {
+        this.gasto = gasto;
+        this.render();
+        this.addEventListeners();
+    }
+    render() {
+        const shadow = this.shadowRoot;
+        shadow.querySelector('.gasto-descripcion').textContent = this.gasto.descripcion;
+        shadow.querySelector('.gasto-valor').textContent = this.gasto.valor.toFixed(2);
+        shadow.querySelector('.gasto-fecha').textContent = new Date(this.gasto.fecha).toLocaleDateString();
+        shadow.querySelector('.gasto-etiquetas').textContent = this.gasto.etiquetas.join(', '); 
+    }
+    addEventListeners() {
+        const shadow = this.shadowRoot;
 
-    div.querySelector("button").addEventListener("click", () => {
-    if (confirm("¿Seguro que deseas borrar este gasto?")) {
-    borrarGasto(gasto.id);
-    renderizarGastos();
+        const botonBorrar = shadow.querySelector('.eliminar-gasto');
+        const formeditarGasto = shadow.querySelector(".editar-form");
+        const botonCancelar = shadow.querySelector(".cancelar-edicion");
+
+        botonBorrar.addEventListener('click', () => {
+            if (confirm("¿Seguro que deseas borrar este gasto?")) {
+                borrarGasto(this.gasto.id);
+                renderizarGastos();
             }
         });
 
-    listaGastos.appendChild(div);
+        const botonEditar = shadow.querySelector('.editar-gasto');
 
+        botonEditar.addEventListener('click', () => {
+            formeditarGasto.style.display = formeditarGasto.style.display === 'block' ? 'none' : 'block';
+        });
+        botonCancelar.addEventListener('click', () => {
+            formeditarGasto.style.display = 'none';
+
+        });
+        formeditarGasto.onsubmit = (event) => {
+            event.preventDefault();
+            const nuevaDescripcion = shadow.querySelector(".editar-descripcion").value || this.gasto.descripcion;
+            const nuevoValorInput = parseFloat(shadow.querySelector(".editar-valor").value) || this.gasto.valor;
+            const nuevaFechaInput = shadow.querySelector(".editar-fecha").value || this.gasto.fecha;
+            const nuevasEtiquetasInput = shadow.querySelector(".editar-etiquetas").value ? 
+            shadow.querySelector(".editar-etiquetas").value.split(',').map(etiqueta => etiqueta.trim()).filter(etiqueta => etiqueta !== '') : this.gasto.etiquetas;
+
+            Object.assign(this.gasto, {
+                descripcion: nuevaDescripcion,
+                valor: nuevoValorInput,
+                fecha: nuevaFechaInput,
+                etiquetas: nuevasEtiquetasInput
+            });
+            renderizarGastos();
+
+        };
+    }
+
+}
+customElements.define('mi-gasto', MiGasto);
+
+function renderizarGastos() {
+    const gastosContainer = document.getElementById("gastos-container");
+    gastosContainer.innerHTML = ''; // Limpia el contenedor antes de renderizar
+    const gastos = listarGastos();
+    gastos.forEach(gasto => {
+        const gastoElemento = document.createElement('mi-gasto');
+        gastoElemento.data = gasto;
+        gastosContainer.appendChild(gastoElemento);
     });
 }
 

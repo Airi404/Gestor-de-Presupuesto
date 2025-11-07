@@ -41,13 +41,48 @@
             </div>
             <button type="submit">Añadir gasto</button>
         </form>
-
         <div id="lista-gastos">
             <h2>Gastos registrados</h2>
             <div id="gastos-container">
-                <!-- Gastos serán cargados aquí -->
+                <!-- Los gastos se añadirán aquí dinámicamente -->
             </div>
         </div>
     </div>
+    <template id="plantilla-gasto">
+        <style>
+            .editar-form {
+                display: none;
+                margin-top: 10px;
+            }
+            .gasto {
+                border: 1px solid #ccc;
+                padding: 10px;
+                margin-bottom: 10px;
+            }
+            .accion button {
+                margin-right: 5px;
+            }
+        </style>
+        <div class="gasto">
+            <p><strong>Descripción:</strong> <span class="gasto-descripcion"></span></p>
+            <p><strong>Valor:</strong> <span class="gasto-valor"></span> €</p>
+            <p><strong>Fecha:</strong> <span class="gasto-fecha"></span></p>
+            <p><strong>Etiquetas:</strong> <span class="gasto-etiquetas"></span></p>
+        </div>
+        <div class="accion">
+            <button class="eliminar-gasto">Eliminar gasto</button>
+            <button class="editar-gasto">Editar gasto</button>
+        </div>
+
+        <form class="editar-form">
+            <input type="text" class="editar-descripcion" placeholder="Nueva descripción" required>
+            <input type="text" class="editar-valor" placeholder="Nuevo valor (€)" required>
+            <input type="date" class="editar-fecha" required>
+            <input type="text" class="editar-etiquetas" placeholder="Nuevas etiquetas separadas por comas">
+            <button type="submit" class="guardar-cambios">Guardar cambios</button>
+            <button type="button" class="cancelar-edicion">Cancelar</button>
+        </form>
+
+    </template>
 </body>
 </html>
