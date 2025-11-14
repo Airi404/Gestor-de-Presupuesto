@@ -147,17 +147,19 @@ function renderizarGastos() {
 }
 
 
-
+//variable que almacena los gatos
 const gastosGuardados = 'gastos_guardados';
 
 document.getElementById("guardar-gastos").addEventListener("click", () =>{
     const gastos =  listarGastos();
-    const gastosJson = JSON.stringify(gastos);
+    const gastosJson = JSON.stringify(gastos); //almacena los gastos en un JSON
+    // Guardamos la cadena JSON en localStorage bajo la clave definida
     localStorage.setItem(gastosGuardados, gastosJson);
     alert("Datos guardados correctamente.")
 });
 
 document.getElementById("recuperar").addEventListener("click", () => {
+        // Recuperamos la cadena JSON almacenada en localStorage
     const datosGuardados = localStorage.getItem(gastosGuardados);
     if (!datosGuardados){
         alert("No hay datos guardados.")
@@ -165,9 +167,11 @@ document.getElementById("recuperar").addEventListener("click", () => {
     }
     try{
         const plano = JSON.parse(datosGuardados);
+        // Reconstruimos cada objeto como una instancia de CrearGasto
         const datosconstruidos = plano.map((obj, index) =>
-            new CrearGasto(obj.descripcion, obj.valor, obj.fecha, ...(obj.etiquetas || []))
+            new CrearGasto(obj.descripcion, obj.valor, obj.fecha, ...(obj.etiquetas || [])) //volvemos a crear los gastos
         );
+        // Sobrescribimos la lista global de gastos con los objetos reconstruidos
         sobrescribirGastos(datosconstruidos);
         renderizarGastos();
 
