@@ -3,7 +3,8 @@ import {
   CrearGasto,
   anyadirGasto,
   listarGastos,
-  borrarGasto
+  borrarGasto,
+  sobrescribirGastos
 } from './gestionPresupuesto.js';
 
 document.getElementById("formulario-presupuesto").addEventListener("submit", function(event) {
@@ -145,3 +146,34 @@ function renderizarGastos() {
     });
 }
 
+
+
+const gastosGuardados = 'gastos_guardados';
+
+document.getElementById("guardar-gastos").addEventListener("click", () =>{
+    const gastos =  listarGastos();
+    const gastosJson = JSON.stringify(gastos);
+    localStorage.setItem(gastosGuardados, gastosJson);
+    alert("Datos guardados correctamente.")
+});
+
+document.getElementById("recuperar").addEventListener("click", () => {
+    const datosGuardados = localStorage.getItem(gastosGuardados);
+    if (!datosGuardados){
+        alert("No hay datos guardados.")
+        return;
+    }
+    try{
+        const plano = JSON.parse(datosGuardados);
+        const datosconstruidos = plano.map((obj, index) =>
+            new CrearGasto(obj.descripcion, obj.valor, obj.fecha, ...(obj.etiquetas || []))
+        );
+        sobrescribirGastos(datosconstruidos);
+        renderizarGastos();
+
+        alert("datos recuperados!");
+    } catch{
+        console.error("Error al recuperar datos: ", error)
+        alert("hubo un problema y no se pudo recuperar los datos...")
+    }
+});

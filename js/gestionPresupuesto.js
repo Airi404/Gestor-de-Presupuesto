@@ -3,6 +3,11 @@ let presupuesto = 0;
 let gastos = [];
 let idGasto = 0;
 
+function sobrescribirGastos(nuevaLista) {
+    gastos = nuevaLista;
+    idGasto = nuevaLista.length;
+}
+
 // Función para actualizar el presupuesto
 function actualizarPresupuesto(nuevoPresupuesto) 
 {
@@ -231,6 +236,7 @@ export
     mostrarPresupuesto,
     CrearGasto,
     filtrarGastos,
-    agruparGastos
+    agruparGastos,
+    sobrescribirGastos
 
 }
